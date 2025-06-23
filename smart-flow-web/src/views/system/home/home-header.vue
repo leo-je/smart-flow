@@ -22,7 +22,7 @@
           <p class="last-login-info"><AlertOutlined />{{ lastLoginInfo }}</p>
           <a class="sentence" href="#" target="_blank"> <smile-outlined spin /> {{ heartSentence }} </a>
         </span>
-        <div class="weather">
+        <div class="weather" style="display: none;">
           <iframe
             width="100%"
             scrolling="no"

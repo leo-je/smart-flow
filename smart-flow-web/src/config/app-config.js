@@ -11,13 +11,13 @@ export const appDefaultConfig = {
   // i18n 语言选择
   language: 'zh_CN',
   // 布局: side 或者 side-expand 或者 top
-  layout: 'side',
+  layout: 'top',
   // 侧边菜单宽度 ， 默认为200px
   sideMenuWidth: 200,
   //标签页位置
   pageTagLocation: 'center',
   // 菜单主题
-  sideMenuTheme: 'dark',
+  sideMenuTheme: 'light',
   // 主题颜色索引
   colorIndex: 0,
   // 顶部菜单页面宽度
@@ -28,8 +28,8 @@ export const appDefaultConfig = {
   flatPattern: true,
   // 标签页
   pageTagFlag: true,
-  // 标签页样式: default、 antd、chrome
-  pageTagStyle: 'default',
+  // 标签页样式: default,antd,chrome
+  pageTagStyle: 'antd',
   // 面包屑
   breadCrumbFlag: true,
   // 页脚
@@ -39,9 +39,9 @@ export const appDefaultConfig = {
   // 帮助文档默认展开
   helpDocExpandFlag: false,
   // 水印
-  watermarkFlag: true,
+  watermarkFlag: false,
   // 网站名称
-  websiteName: 'SmartFlow工作流',
+  websiteName: '在线办公系统',
   // 主题颜色
   primaryColor: '#1677ff',
   // 紧凑

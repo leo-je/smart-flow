@@ -45,9 +45,9 @@
     <a-col :span="8">
       <a-row :gutter="[10, 10]">
         <!--快捷入口-->
-<!--        <a-col :span="24">-->
-<!--          <HomeQuickEntry />-->
-<!--        </a-col>-->
+       <!-- <a-col :span="24"> -->
+         <!-- <HomeQuickEntry /> -->
+       <!-- </a-col> -->
         <!--关注公众号-->
 <!--        <a-col :span="24">-->
 <!--          <OfficialAccountCard />-->
@@ -75,6 +75,7 @@
   import Category from './components/echarts/category.vue';
   import Pie from './components/echarts/pie.vue';
   import Gradient from './components/echarts/gradient.vue';
+  import HomeQuickEntry from './components/quick-entry/home-quick-entry.vue';
   // import AdModal from './ad-modal.vue';
 
   // 业绩完成百分比

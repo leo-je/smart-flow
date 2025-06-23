@@ -18,7 +18,7 @@
       <img class="welcome-img" :src="loginGif" />
     </div>
     <div class="box-item login">
-      <img class="login-qr" :src="loginQR" />
+      <!-- <img class="login-qr" :src="loginQR" /> -->
       <div class="login-title">账号登录</div>
       <a-form ref="formRef" class="login-form" :model="loginForm" :rules="rules">
         <a-form-item name="loginName">
@@ -52,7 +52,7 @@
           <div class="btn" @click="onLogin">登录</div>
         </a-form-item>
       </a-form>
-      <div class="more">
+      <div class="more" style="display: none;">
         <div class="title-box">
           <p class="line"></p>
           <p class="title">其他方式登录</p>
