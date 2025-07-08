@@ -1,7 +1,7 @@
 spring:
   # 数据库连接信息
   datasource:
-    url: jdbc:mysql://127.0.0.1:13306/smart_flow_v3?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://152.69.201.197:13306/smart_flow_v3?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
     username: cloud
     password: 111111
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -23,9 +23,9 @@ spring:
   # redis 连接池配置信息
   data:
     redis:
-      database: 10
-      host: 127.0.0.1
-      port: 6379
+      database: 2
+      host: 152.69.201.197
+      port: 16379
       password: 123456
       timeout: 10000ms
       lettuce:

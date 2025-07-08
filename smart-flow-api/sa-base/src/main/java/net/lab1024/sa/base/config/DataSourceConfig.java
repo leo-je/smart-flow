@@ -137,6 +137,17 @@ public class DataSourceConfig {
         factoryBean.setDataSource(druidDataSource());
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = resolver.getResources("classpath*:/mapper/**/*.xml");
+        Resource[] resources2 = resolver.getResources("classpath*:net/lab1024/**/mapper/*Mapper.xml");
+
+        // 创建一个足够大的新数组来容纳两个数组的内容
+        Resource[] mergedResources = new Resource[resources.length + resources2.length];
+        // 复制第一个数组的内容
+        System.arraycopy(resources, 0, mergedResources, 0, resources.length);
+        // 复制第二个数组的内容
+        System.arraycopy(resources2, 0, mergedResources, resources.length, resources2.length);
+        // 将合并后的数组赋值回 resources 变量
+        resources = mergedResources;
+
         factoryBean.setMapperLocations(resources);
 
         // 设置 MyBatis-Plus 分页插件 注意此处myBatisPlugin一定要放在后面

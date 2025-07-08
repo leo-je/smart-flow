@@ -55,7 +55,7 @@
         <jackson-datatype-jsr310.version>2.13.4</jackson-datatype-jsr310.version>
         <jackson-dataformat-yaml.version>2.16.1</jackson-dataformat-yaml.version>
         <smartdb.version>1.2.0</smartdb.version>
-        <redisson.version>3.25.0</redisson.version>
+        <redisson.version>3.50.0</redisson.version>
         <snakeyaml.version>2.2</snakeyaml.version>
         <freemarker.version>2.3.33</freemarker.version>
         <jsoup.version>1.18.1</jsoup.version>
@@ -384,6 +384,13 @@
                 <filtering>false</filtering>
                 <includes>
                     <include>*.*</include>
+                </includes>
+            </resource>
+
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*Mapper.xml</include>
                 </includes>
             </resource>
         </resources>

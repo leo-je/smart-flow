@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.lab1024.sa.admin.module.epic.dao.JeEpicFormConfigDao">
+
+    <!-- 查询结果列 -->
+    <sql id="base_columns">
+        t_je_epic_form_config.id,
+        t_je_epic_form_config.form_config,
+        t_je_epic_form_config.version,
+        t_je_epic_form_config.form_name
+    </sql>
+
+    <!-- 分页查询 -->
+    <select id="queryPage" resultType="net.lab1024.sa.admin.module.epic.domain.vo.JeEpicFormConfigVO">
+        SELECT
+        <include refid="base_columns"/>
+        FROM t_je_epic_form_config
+        <where>
+            <!--表单名称-->
+            <if test="queryForm.formName != null and queryForm.formName != ''">
+                AND INSTR(t_je_epic_form_config.form_name,#{queryForm.formName})
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

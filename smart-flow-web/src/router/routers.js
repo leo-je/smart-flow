@@ -20,5 +20,7 @@ export const routerArray = [
     ...flowRouters,
     ...helpDocRouters, 
     { path: '/:pathMatch(.*)*', name: '404', component: NotFound },
-    { path: '/403', name: '403', component: NoPrivilege }
+    { path: '/403', name: '403', component: NoPrivilege },
+    { path: '/epicDesigner', name: 'epicDesigner', component: ()=> import('/@/views/extend/EDesigner/index.vue') },
+
 ];

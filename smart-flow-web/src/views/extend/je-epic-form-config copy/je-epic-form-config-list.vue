@@ -1,46 +1,17 @@
 <!--
-  * ${basic.description}
+  * epic表单设计器
   *
-  * @Author:    ${basic.frontAuthor}
-  * @Date:      ${basic.frontDate}
-  * @Copyright  ${basic.copyright}
+  * @Author:    je
+  * @Date:      2025-07-08 14:35:15
+  * @Copyright  je v1.0
 -->
 <template>
     <!---------- 查询表单form begin ----------->
     <a-form class="smart-query-form">
         <a-row class="smart-query-form-row">
-#foreach ($field in $queryFields)
-#if($field.queryTypeEnum == "Like")
-            <a-form-item label="${field.label}" class="smart-query-form-item">
-                <a-input style="width: ${field.width}" v-model:value="queryForm.${field.fieldName}" placeholder="${field.label}" />
+            <a-form-item label="表单名称" class="smart-query-form-item">
+                <a-input style="width: 200px" v-model:value="queryForm.formName" placeholder="表单名称" />
             </a-form-item>
-#end
-#if($field.queryTypeEnum == "Equal")
-            <a-form-item label="${field.label}" class="smart-query-form-item">
-                <a-input style="width: ${field.width}" v-model:value="queryForm.${field.fieldName}" placeholder="${field.label}" />
-            </a-form-item>
-#end
-#if($field.queryTypeEnum == "Dict")
-            <a-form-item label="${field.label}" class="smart-query-form-item">
-              <DictSelect dict-code="DICT_CODE_ENUM.$!{field.dict} || '$!{field.dict}'" placeholder="${field.label}" v-model:value="queryForm.${field.fieldName}" width="${field.width}" />
-            </a-form-item>
-#end
-#if($field.queryTypeEnum == "Enum")
-            <a-form-item label="$codeGeneratorTool.removeEnumDesc(${field.label})" class="smart-query-form-item">
-              <SmartEnumSelect width="${field.width}" v-model:value="queryForm.${field.fieldName}" enum-name="$!{field.frontEnumName}" placeholder="$codeGeneratorTool.removeEnumDesc(${field.label})"/>
-            </a-form-item>
-#end
-#if($field.queryTypeEnum == "Date")
-            <a-form-item label="${field.label}" class="smart-query-form-item">
-                <a-date-picker valueFormat="YYYY-MM-DD" v-model:value="queryForm.$!{field.fieldName}" style="width: ${field.width}" />
-            </a-form-item>
-#end
-#if($field.queryTypeEnum == "DateRange")
-            <a-form-item label="${field.label}" class="smart-query-form-item">
-                <a-range-picker v-model:value="queryForm.$!{field.fieldName}" :presets="defaultTimeRanges" style="width: ${field.width}" @change="onChange$codeGeneratorTool.lowerCamel2UpperCamel(${field.fieldName})" />
-            </a-form-item>
-#end
-#end
             <a-form-item class="smart-query-form-item">
                 <a-button type="primary" @click="onSearch">
                     <template #icon>
@@ -63,22 +34,12 @@
         <!---------- 表格操作行 begin ----------->
         <a-row class="smart-table-btn-block">
             <div class="smart-table-operate-block">
-#if($insertAndUpdate.isSupportInsertAndUpdate)
-                <a-button @click="showForm" type="primary" size="small">
-                    <template #icon>
-                        <PlusOutlined />
-                    </template>
-                    新建
-                </a-button>
-#end
-#if($deleteInfo.isSupportDelete && ($deleteInfo.deleteEnum == "Batch"||$deleteInfo.deleteEnum == "SingleAndBatch"))
                 <a-button @click="confirmBatchDelete" type="primary" danger size="small" :disabled="selectedRowKeyList.length == 0">
                     <template #icon>
                         <DeleteOutlined />
                     </template>
                     批量删除
                 </a-button>
-#end
             </div>
             <div class="smart-table-setting-block">
                 <TableOperator v-model="columns" :tableId="null" :refresh="queryData" />
@@ -91,39 +52,18 @@
             size="small"
             :dataSource="tableData"
             :columns="columns"
-            rowKey="$!{primaryKeyFieldName}"
+            rowKey="id"
             bordered
             :loading="tableLoading"
             :pagination="false"
-#if($deleteInfo.isSupportDelete && ($deleteInfo.deleteEnum == "Batch"||$deleteInfo.deleteEnum == "SingleAndBatch"))
             :row-selection="{ selectedRowKeys: selectedRowKeyList, onChange: onSelectChange }"
-#end
         >
             <template #bodyCell="{ text, record, column }">
 
-            #foreach ($field in $listFields)
-                #if($field.frontComponent == "FileUpload")
-                <template v-if="column.dataIndex === '$field.fieldName'">
-                    <FilePreview :file-list="text" type="picture" />
-                </template>
-                #end
-            #end
-            #foreach ($field in $listFields)
-                #if($field.dict)
-                <template v-if="column.dataIndex === '$!{field.fieldName}'">
-                    <DictLabel :dict-code="DICT_CODE_ENUM.$!{field.dict} || '$!{field.dict}'" :data-value="text" />
-                </template>
-                #end
-            #end
 
                 <template v-if="column.dataIndex === 'action'">
                     <div class="smart-table-operate">
-#if($insertAndUpdate.isSupportInsertAndUpdate)
-                        <a-button @click="showForm(record)" type="link">编辑</a-button>
-#end
-#if($deleteInfo.isSupportDelete && ($deleteInfo.deleteEnum == "Single"||$deleteInfo.deleteEnum == "SingleAndBatch"))
                         <a-button @click="onDelete(record)" danger type="link">删除</a-button>
-#end
                     </div>
                 </template>
             </template>
@@ -146,7 +86,7 @@
             />
         </div>
 
-        <$!{name.upperCamel}Form  ref="formRef" @reloadList="queryData"/>
+        <JeEpicFormConfigForm  ref="formRef" @reloadList="queryData"/>
 
     </a-card>
 </template>
@@ -154,53 +94,41 @@
     import { reactive, ref, onMounted } from 'vue';
     import { message, Modal } from 'ant-design-vue';
     import { SmartLoading } from '/@/components/framework/smart-loading';
-    //import { $!{name.lowerCamel}Api } from '/@/api/business/$!{name.lowerHyphenCamel}/$!{name.lowerHyphenCamel}-api';
-    import { $!{name.lowerCamel}Api } from './$!{name.lowerHyphenCamel}-api';
+    import { jeEpicFormConfigApi } from '/@/api/business/je-epic-form-config/je-epic-form-config-api';
     import { PAGE_SIZE_OPTIONS } from '/@/constants/common-const';
     import { smartSentry } from '/@/lib/smart-sentry';
     import TableOperator from '/@/components/support/table-operator/index.vue';
-#foreach ($import in $frontImportList)
-    $!{import}
-#end
+    import JeEpicFormConfigForm from './je-epic-form-config-form.vue';
 
     // ---------------------------- 表格列 ----------------------------
 
     const columns = ref([
-#foreach ($field in $tableFields)
-#if($field.showFlag)
         {
-            title: '$!{field.label}',
-            dataIndex: '$!{field.fieldName}',
-            ellipsis: $!{field.ellipsisFlag},
-#if(${field.width} > 0)
-            width: $!{field.width},
-#end
+            title: '主键',
+            dataIndex: 'id',
+            ellipsis: true,
         },
-#end
-#end
-#if($insertAndUpdate.isSupportInsertAndUpdate || $insertAndUpdate.isSupportInsertAndUpdate)
         {
-            title: '操作',
-            dataIndex: 'action',
-            fixed: 'right',
-            width: 90,
+            title: '配置信息',
+            dataIndex: 'formConfig',
+            ellipsis: true,
         },
-#end
+        {
+            title: '版本',
+            dataIndex: 'version',
+            ellipsis: true,
+        },
+        {
+            title: '表单名称',
+            dataIndex: 'formName',
+            ellipsis: true,
+        },
     ]);
 
     // ---------------------------- 查询数据表单和方法 ----------------------------
 
     const queryFormState = {
-#foreach ($field in $queryFields)
-#if($field.queryTypeEnum == "DateRange")
-        $!{field.fieldName}: [], //$!{field.label}
-        $!{field.fieldName}Begin: undefined, //$!{field.label} 开始
-        $!{field.fieldName}End: undefined, //$!{field.label} 结束
-#end
-#if($field.queryTypeEnum != "DateRange")
-        $!{field.fieldName}: undefined, //$!{field.label}
-#end
-#end
+        formName: undefined, //表单名称
         pageNum: 1,
         pageSize: 10,
     };
@@ -231,7 +159,7 @@
     async function queryData() {
         tableLoading.value = true;
         try {
-            let queryResult = await $!{name.lowerCamel}Api.queryPage(queryForm);
+            let queryResult = await jeEpicFormConfigApi.queryPage(queryForm);
             tableData.value = queryResult.data.list;
             total.value = queryResult.data.total;
         } catch (e) {
@@ -241,29 +169,10 @@
         }
     }
 
-#foreach ($field in $queryFields)
-    #if($field.queryTypeEnum == "DateRange")
-    function onChange$codeGeneratorTool.lowerCamel2UpperCamel(${field.fieldName})(dates, dateStrings){
-        queryForm.$!{field.fieldName}Begin = dateStrings[0];
-        queryForm.$!{field.fieldName}End = dateStrings[1];
-    }
-
-    #end
-#end
 
     onMounted(queryData);
 
-#if($insertAndUpdate.isSupportInsertAndUpdate)
-    // ---------------------------- 添加/修改 ----------------------------
-    const formRef = ref();
 
-    function showForm(data) {
-        formRef.value.show(data);
-    }
-#end
-
-#if($deleteInfo.isSupportDelete)
-    #if($deleteInfo.deleteEnum == "Batch" || $deleteInfo.deleteEnum == "SingleAndBatch")
     // ---------------------------- 单个删除 ----------------------------
     //确认删除
     function onDelete(data){
@@ -287,7 +196,7 @@
             let deleteForm = {
                 goodsIdList: selectedRowKeyList.value,
             };
-            await $!{name.lowerCamel}Api.delete(data.$!{primaryKeyFieldName});
+            await jeEpicFormConfigApi.delete(data.id);
             message.success('删除成功');
             queryData();
         } catch (e) {
@@ -296,9 +205,7 @@
             SmartLoading.hide();
         }
     }
-    #end
 
-    #if($deleteInfo.deleteEnum == "Single" || $deleteInfo.deleteEnum == "SingleAndBatch")
     // ---------------------------- 批量删除 ----------------------------
 
     // 选择表格行
@@ -327,7 +234,7 @@
     async function requestBatchDelete() {
         try {
             SmartLoading.show();
-            await $!{name.lowerCamel}Api.batchDelete(selectedRowKeyList.value);
+            await jeEpicFormConfigApi.batchDelete(selectedRowKeyList.value);
             message.success('删除成功');
             queryData();
         } catch (e) {
@@ -336,6 +243,4 @@
             SmartLoading.hide();
         }
     }
-    #end
-#end
 </script>

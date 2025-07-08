@@ -10,7 +10,7 @@
 import { resolve } from 'path';
 import vue from '@vitejs/plugin-vue';
 import customVariables from '/@/theme/custom-variables.js';
-
+import monacoEditorPlugin from 'vite-plugin-monaco-editor'
 const pathResolve = (dir) => {
   return resolve(__dirname, '.', dir);
 };
@@ -40,7 +40,9 @@ export default {
     host: '0.0.0.0',
     port: 8181,
   },
-  plugins: [vue()],
+  plugins: [vue(),(monacoEditorPlugin).default({
+      languageWorkers:['editorWorkerService', 'json']
+    })],
   optimizeDeps: {
     include: ['ant-design-vue/es/locale/zh_CN', 'dayjs/locale/zh-cn', 'ant-design-vue/es/locale/en_US'],
     exclude: ['vue-demi'],

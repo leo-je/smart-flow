@@ -18,9 +18,10 @@
   "type": "module",
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
+    "@rollup/rollup-darwin-x64": "^4.44.2",
     "@wangeditor-next/editor": "5.6.34",
     "@wangeditor-next/editor-for-vue": "5.1.14",
-    "ant-design-vue": "4.2.5",
+    "ant-design-vue": "^4.2.5",
     "axios": "1.6.8",
     "clipboard": "2.0.11",
     "crypto-js": "4.1.1",
@@ -29,6 +30,7 @@
     "diff": "5.2.0",
     "diff2html": "3.4.47",
     "echarts": "5.4.3",
+    "epic-designer": "^1.0.2",
     "highlight.js": "11.8.0",
     "lodash": "4.17.21",
     "lunar-javascript": "1.6.12",
@@ -41,6 +43,7 @@
     "uuid": "^11.1.0",
     "v-viewer": "~1.6.4",
     "vue": "3.4.27",
+    "vue-demi": "^0.14.10",
     "vue-i18n": "9.13.1",
     "vue-router": "4.3.2",
     "vue3-json-viewer": "2.2.2"
@@ -62,6 +65,7 @@
     "stylelint-order": "~5.0.0",
     "terser": "~5.29.2",
     "vite": "5.2.12",
+    "vite-plugin-monaco-editor": "^1.1.0",
     "vue-eslint-parser": "~9.4.2"
   },
   "engines": {
