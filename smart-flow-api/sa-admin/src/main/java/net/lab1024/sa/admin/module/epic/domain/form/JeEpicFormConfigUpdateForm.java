@@ -23,4 +23,7 @@ public class JeEpicFormConfigUpdateForm {
     @NotBlank(message = "表单名称 不能为空")
     private String formName;
 
+
+    private String formConfig;
+
 }

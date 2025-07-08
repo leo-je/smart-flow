@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import net.lab1024.sa.admin.module.epic.domain.entity.JeEpicFormConfigEntity;
 import net.lab1024.sa.admin.module.epic.domain.form.JeEpicFormConfigAddForm;
 import net.lab1024.sa.admin.module.epic.domain.form.JeEpicFormConfigQueryForm;
 import net.lab1024.sa.admin.module.epic.domain.form.JeEpicFormConfigUpdateForm;
@@ -64,4 +65,12 @@ public class JeEpicFormConfigController {
     public ResponseDTO<String> batchDelete(@PathVariable String id) {
         return jeEpicFormConfigService.delete(id);
     }
+
+    @Operation(summary = "获取单个 @author je")
+    @GetMapping("/jeEpicFormConfig/get/{id}")
+    @SaCheckPermission("jeEpicFormConfig:delete")
+    public ResponseDTO<JeEpicFormConfigEntity> getById(@PathVariable String id) {
+        return jeEpicFormConfigService.getById(id);
+    }
+
 }

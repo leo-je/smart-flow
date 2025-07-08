@@ -82,4 +82,9 @@ public class JeEpicFormConfigService {
         jeEpicFormConfigDao.deleteById(id);
         return ResponseDTO.ok();
     }
+
+    public ResponseDTO<JeEpicFormConfigEntity> getById(String id) {
+        JeEpicFormConfigEntity jeEpicFormConfigEntity = jeEpicFormConfigDao.selectById(id);
+        return ResponseDTO.ok(jeEpicFormConfigEntity);
+    }
 }
