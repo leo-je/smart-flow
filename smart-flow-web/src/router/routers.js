@@ -13,14 +13,15 @@ import { flowRouters } from './flow/flow';
 import { helpDocRouters } from './support/help-doc';
 import NotFound from '/@/views/system/40X/404.vue';
 import NoPrivilege from '/@/views/system/40X/403.vue';
+import EDesigner from '/@/views/extend/EDesigner/index.vue';
 
 export const routerArray = [
     ...loginRouters,
-     ...homeRouters,
+    ...homeRouters,
     ...flowRouters,
-    ...helpDocRouters, 
+    ...helpDocRouters,
     { path: '/:pathMatch(.*)*', name: '404', component: NotFound },
     { path: '/403', name: '403', component: NoPrivilege },
-    { path: '/epicDesigner', name: 'epicDesigner', component: ()=> import('/@/views/extend/EDesigner/index.vue') },
+    { path: '/epicDesigner', meta: { allWin: true }, name: 'epicDesigner', component: EDesigner },
 
 ];

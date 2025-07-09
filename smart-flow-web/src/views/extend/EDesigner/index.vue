@@ -1,12 +1,12 @@
 <template>
   <div class="epic-designer-container">
-    <EDesigner @save="handleSubmit" />
+    <EDesigner ref="edRef" @save="handleSubmit" :hiddenHeader="true" />
   </div>
 </template>
 <script setup>
 import { EDesigner } from "epic-designer";
 import { getRequest, postRequest } from '/@/lib/axios';
-import { reactive, ref, nextTick } from 'vue';
+import { reactive, ref, nextTick, onMounted } from 'vue';
 
 const formDefault = {
   id: undefined, //主键
@@ -15,7 +15,7 @@ const formDefault = {
 };
 
 let formInfo = reactive({ ...formDefault });
-
+const edRef = ref(null);
 
 /**
  * 点击保存按钮操作
@@ -25,7 +25,7 @@ function handleSubmit(e) {
   console.log(e);
   formInfo.formConfig = JSON.stringify(e);
   postRequest('/jeEpicFormConfig/update', formInfo).then((res) => {
-    if (res.code == 200) {
+    if (res.ok) {
       console.log("保存成功");
       // message.success('保存成功');
     } else {
@@ -52,25 +52,34 @@ function getUrlParams() {
 }
 
 // ---   
+onMounted(async () => {
+  setTimeout(() => {
+    //   ebRef.value?.setData({
+    //     input_sb6jhfb8: "自动填写的内容",
+    //   });
 
-// 从URL获取参数集合
-const params = getUrlParams();
-console.log('params', params);
+    // 从URL获取参数集合
+    const params = getUrlParams();
+    console.log('params', params);
 
-if (params.id) {
-  formInfo.id = params.id;
+    if (params.id) {
+      formInfo.id = params.id;
+      // 获取流程数据
+      getRequest(`/jeEpicFormConfig/get/${params.id}`).then((res) => {
+        console.log('res', res);
+        if (res.ok == true) {
+          // 创建流程设计器
+          if (res.data) {
+            formInfo = res.data;
+            edRef.value?.setData(JSON.parse(res.data.formConfig))
 
-  // 获取流程数据
-  getRequest(`/jeEpicFormConfig/get/${params.id}`).then((res) => {
-    console.log('res', res);
-    if (res.ok == true) {
-      // 创建流程设计器
-      if (res.data) {
-        formInfo = res.data;
-      }
+          }
+        }
+      })
     }
-  })
-}
+  }, 200);
+});
+
 
 </script>
 <style>

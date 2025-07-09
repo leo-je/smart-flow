@@ -27,6 +27,10 @@ export const router = createRouter({
   scrollBehavior: () => ({ left: 0, top: 0 }),
 });
 
+const allWins = routerArray.filter((item) => item && item.meta && item.meta.allWin)
+const allWinMap = new Map();
+allWins.forEach(item => allWinMap.set(item.name, item));
+
 // ----------------------- 路由加载前 -----------------------
 router.beforeEach(async (to, from, next) => {
   // 进度条开启
@@ -63,7 +67,12 @@ router.beforeEach(async (to, from, next) => {
   }
 
   // 下载路由对应的 页面组件，并修改组件的Name，如果修改过，则不需要修改
-  let toRouterInfo = routerMap.get(to.name);
+  let toRouterInfo = allWinMap.get(to.name);
+  // debugger
+  if (toRouterInfo && toRouterInfo.meta && toRouterInfo.meta.allWin) {
+    next();
+    return;
+  }
   if (toRouterInfo && _.isFunction(toRouterInfo.component) && toRouterInfo.meta.renameComponentFlag === false) {
     // 因为组件component 为 lazy load是个方法，所以可以直接执行 component()方法
     toRouterInfo.component().then((val) => {
