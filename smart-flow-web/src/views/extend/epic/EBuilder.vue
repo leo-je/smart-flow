@@ -2,6 +2,11 @@
     <div style="background: white;">
         <EBuilder ref="ebRef" :pageSchema="pageSchema" />
         <!-- <button @click="handleReset">重置数据</button> -->
+         <div>
+            <button @click="()=>{
+                console.log(this.$refs.ebRef.getData())
+            }">重置数据</button>
+         </div>
     </div>
 </template>
 
